@@ -1,0 +1,19 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ upload() }}
+<div class="button-group">{{ run('Show Info', 'info', true, false) }}{{ run('Convert to Grayscale', 'grayscale', false, false) }}{{ run('Rotate 90°', 'rotate', false, false) }}</div>
+<fieldset><legend>Pixel coordinates</legend>
+<div class="fields">{{ numeric('pixel_x','X',0,0) }}{{ numeric('pixel_y','Y',0,0) }}</div>
+<div class="fields three">{{ numeric('red','Red',255,0,255) }}{{ numeric('green','Green',0,0,255) }}{{ numeric('blue','Blue',0,0,255) }}</div>
+<div class="button-group">{{ run('Inspect Pixel','inspect',false,false) }}{{ run('Modify Pixel','pixel',false,false) }}</div>
+</fieldset>
+<fieldset><legend>Crop a region</legend>
+<div class="fields">{{ numeric('crop_x','X',0,0) }}{{ numeric('crop_y','Y',0,0) }}{{ numeric('crop_width','Width','',1,placeholder='Auto') }}{{ numeric('crop_height','Height','',1,placeholder='Auto') }}</div>
+{{ run('Crop','crop',false,false) }}
+</fieldset>
+<fieldset><legend>Resize</legend>
+<div class="fields">{{ numeric('new_width','New width',320,1,2048) }}{{ numeric('new_height','New height',240,1,2048) }}</div>
+{{ run('Resize','resize',false,false) }}
+</fieldset>
+{% endblock %}
+{% block notes %}<p>Coordinates start at the top-left corner. X is the column and Y is the row. The UI reports RGB values. OpenCV uses BGR channel order internally. Each operation starts with the original input. Open a result at full size to examine a single modified pixel.</p>{% endblock %}

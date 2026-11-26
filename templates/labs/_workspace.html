@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'labs/_controls.html' import upload, numeric, select, run with context %}
+{% block content %}
+<div class="breadcrumb"><a href="{{ url_for('index') }}">Command Hub</a><span>/</span><span>Lab Activity {{ number }}</span></div>
+<section class="lab-hero">
+    <div class="lab-hero-icon">{{ icon(lab.icon, 34) }}</div>
+    <div><p class="eyebrow">Quest {{ number }} · Lab Activity {{ number }}</p><h1>{{ lab.title }}</h1><p>{{ lab.objective }}</p></div>
+</section>
+<div class="workbench">
+    <section class="panel control-panel" aria-labelledby="configuration-title">
+        <div class="panel-header"><h2 id="configuration-title">Command Setup</h2></div>
+        <form method="post" enctype="multipart/form-data" action="{{ url_for('lab', number=number) }}#results" data-lab-form>
+            <input type="hidden" name="previous_id" value="{{ previous_id or '' }}">
+            <p class="retained" data-retained {% if not previous_id or number == 5 %}hidden{% endif %}>Previous input is ready to reuse.</p>
+            {% block controls %}{% endblock %}
+            <p class="running" data-running role="status" hidden><span class="spinner"></span> Casting…</p>
+        </form>
+    </section>
+    <section class="panel result-panel" id="results" tabindex="-1" aria-labelledby="result-title">
+        {% include 'labs/_results.html' %}
+    </section>
+</div>
+<section class="panel notes-panel">
+    <div class="panel-header"><h2>Grimoire &amp; output notes</h2></div>
+    <div class="notes-body">{% block notes %}{% endblock %}</div>
+</section>
+{% endblock %}

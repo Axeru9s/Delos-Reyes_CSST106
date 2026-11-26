@@ -1,0 +1,12 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ upload(sample='Regions or astronaut, by method') }}
+{{ select('method','Segmentation method',[('compare','Compare classical methods'),('global','Global thresholding'),('otsu','Otsu thresholding'),('adaptive','Adaptive thresholding'),('watershed','Watershed'),('edge','Edge and contour segmentation'),('semantic','Semantic segmentation (LR-ASPP)')]) }}
+<div data-show-for="method:compare,global,otsu,adaptive,watershed">{{ select('polarity','Foreground polarity',[('bright','Bright regions'),('dark','Dark regions')]) }}</div>
+<div data-show-for="method:compare,global">{{ numeric('threshold','Global threshold',125,0,255) }}</div>
+<div class="fields" data-show-for="method:compare,adaptive">{{ numeric('block_size','Adaptive window',31,3,101,2) }}{{ numeric('offset','Adaptive offset',4,-30,30) }}</div>
+<div data-show-for="method:compare,watershed">{{ numeric('seed_ratio','Watershed seed ratio',0.60,0.05,0.95,0.05) }}</div>
+<p class="field-help" data-show-for="method:semantic">Semantic inference first needs Torchvision weights. <a href="{{ url_for('about') }}#models">Model setup</a></p>
+{{ run('Run Segmentation') }}
+{% endblock %}
+{% block notes %}<p>Global thresholding uses a fixed cutoff. Otsu computes a cutoff from the histogram. Adaptive thresholding uses local neighborhoods. Watershed expands from foreground seeds, while contour filling approximates regions from edges. LR-ASPP assigns pretrained semantic classes to individual pixels.</p>{% endblock %}

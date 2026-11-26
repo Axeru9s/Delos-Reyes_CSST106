@@ -1,0 +1,25 @@
+{% from '_icons.html' import icon %}
+{% macro upload(label='Image input', sample='Calibration target', field='image', checked=true) -%}
+<div class="upload">
+    <label for="{{ field }}">{{ label }}</label>
+    <input id="{{ field }}" name="{{ field }}" type="file" accept="image/png,image/jpeg,image/webp,image/bmp,.bmp" data-upload="{{ field }}">
+    <label class="check"><input type="checkbox" name="sample_{{ field }}" {{ 'checked' if checked and not previous_id }}> Use sample · {{ sample }}</label>
+</div>
+{%- endmacro %}
+{% macro numeric(name, label, default='', minimum='', maximum='', step=1, placeholder='') -%}
+<label class="field" for="{{ name }}">
+    <span>{{ label }}</span>
+    <input id="{{ name }}" name="{{ name }}" type="number" value="{{ request.form.get(name, default) }}" {% if minimum != '' %}min="{{ minimum }}"{% endif %} {% if maximum != '' %}max="{{ maximum }}"{% endif %} step="{{ step }}" {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}>
+</label>
+{%- endmacro %}
+{% macro select(name, label, options) -%}
+<label class="field" for="{{ name }}">
+    <span>{{ label }}</span>
+    <select id="{{ name }}" name="{{ name }}">
+    {% for value, caption in options %}<option value="{{ value }}" {% if request.form.get(name, options[0][0]) == value %}selected{% endif %}>{{ caption }}</option>{% endfor %}
+    </select>
+</label>
+{%- endmacro %}
+{% macro run(label='Run', value='', primary=true, validate=true) -%}
+<button type="submit" {% if not validate %}formnovalidate{% endif %} class="button {{ 'primary' if primary else 'secondary' }}" {% if value %}name="operation" value="{{ value }}"{% endif %}>{% if primary %}{{ icon('play', 16) }} {% endif %}{{ label }}</button>
+{%- endmacro %}

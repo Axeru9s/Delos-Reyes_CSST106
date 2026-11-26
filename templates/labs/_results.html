@@ -1,0 +1,25 @@
+<div class="panel-header result-header"><h2 id="result-title">Results</h2>{% if result %}<span class="result-count">{{ result.images|length }} {{ 'output' if result.images|length == 1 else 'outputs' }}</span>{% endif %}</div>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+{% if result %}
+    {% if result.metrics %}<dl class="metrics">{% for key, value in result.metrics %}<div><dt>{{ key }}</dt><dd>{{ value }}</dd></div>{% endfor %}</dl>{% endif %}
+    {% for note in result.notes %}<p class="result-note">{{ note }}</p>{% endfor %}
+    <div class="output-grid">
+        {% for filename, title, caption in result.images %}
+        {% set image_url = url_for('output', run_id=run_id, filename=filename) %}
+        <figure class="output{% if filename in ['histogram.png', 'eigenfaces.png', 'variance.png', 'matches.png', 'failures.png'] %} wide{% endif %}">
+            <a class="output-view" href="{{ image_url }}" target="_blank" rel="noopener" aria-label="Open {{ title }} as a full-size image"><img src="{{ image_url }}" loading="lazy" alt="{{ title }}"></a>
+            <figcaption><div><strong>{{ title }}</strong>{% if caption %}<span>{{ caption }}</span>{% endif %}</div><a class="download" href="{{ image_url }}" download="{{ filename }}" aria-label="Download {{ title }}">{{ icon('download', 19) }}</a></figcaption>
+        </figure>
+        {% endfor %}
+    </div>
+    {% for title, headers, rows in result.tables %}
+    <div class="result-table">
+        <h3>{{ title }}</h3>
+        <div class="table-scroll"><table aria-label="{{ title }}"><thead><tr>{% for header in headers %}<th scope="col">{{ header }}</th>{% endfor %}</tr></thead><tbody>
+        {% for row in rows %}<tr>{% for cell in row %}{% if loop.first %}<th scope="row">{{ cell }}</th>{% else %}<td>{{ cell }}</td>{% endif %}{% endfor %}</tr>{% endfor %}
+        </tbody></table></div>
+    </div>
+    {% endfor %}
+{% elif not error %}
+    <div class="empty-state"><span class="empty-icon">{{ icon(lab.icon, 34) }}</span><h3>No results yet</h3><p>{% if number == 5 %}Choose a dataset and run PCA or classification to view the results.{% else %}Run the method with an uploaded image or the selected sample.{% endif %}</p></div>
+{% endif %}

@@ -1,0 +1,8 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ upload(sample='Low-contrast target') }}
+{{ select('operation','Processing method',[('all','Compare all methods'),('histogram','Show histogram'),('equalize','Global equalization'),('clahe','Apply CLAHE'),('stretch','Contrast adjustment')]) }}
+<div class="fields" data-show-for="operation:all,clahe">{{ numeric('clip_limit','CLAHE clip limit',2,0.1,40,0.1) }}{{ numeric('tile_grid','CLAHE tile grid',8,2,32) }}</div>
+{{ run('Run Contrast Analysis') }}
+{% endblock %}
+{% block notes %}<p>Global equalization redistributes the image’s intensity values. CLAHE equalizes each tile and limits amplification. Contrast stretching maps the 2nd–98th percentile range to the full intensity scale.</p>{% endblock %}

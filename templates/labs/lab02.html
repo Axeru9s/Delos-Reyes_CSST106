@@ -1,0 +1,8 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ upload() }}
+<div class="fields">{{ numeric('lower','Lower threshold',50,0,254) }}{{ numeric('upper','Upper threshold',150,1,255) }}</div>
+{{ numeric('blur_kernel','Gaussian kernel size',5,1,31,2) }}
+{{ run('Run Edge Detection') }}
+{% endblock %}
+{% block notes %}<p>Sobel measures intensity change in the X and Y directions. The magnitude combines both derivatives. Canny uses the two thresholds to distinguish strong edges from weak candidates connected to them.</p>{% endblock %}

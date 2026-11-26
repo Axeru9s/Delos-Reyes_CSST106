@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <p class="eyebrow">CSST106 <span></span> Crystal &amp; Mako Vision</p>
+        <h1>Computer Vision<br>Fantasy Hub</h1>
+        <p class="hero-description">Master seven computer vision quests, from the first pixel to object detection and semantic segmentation.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="{{ url_for('lab', number=1) }}">{{ icon('play', 17) }} Start Quest · Lab 1</a>
+            <a class="button secondary" href="#activities">Select mission</a>
+        </div>
+    </div>
+</section>
+<section class="activities" id="activities" aria-labelledby="activities-title">
+    <div class="section-header"><h2 id="activities-title">Materia &amp; Quests</h2><span class="section-meta">7 activities</span></div>
+    <div class="lab-grid">
+    {% for id, item in labs.items() %}
+        <a class="lab-card materia-{{ id }}" href="{{ url_for('lab', number=id) }}">
+            <div class="card-top"><span class="card-icon">{{ icon(item.icon, 20) }}</span><span class="lab-label"><span class="ff7-lv">LV</span> {{ '%02d'|format(id) }} · Lab Activity {{ id }}</span></div>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.summary }}</p>
+            <div class="ff7-gauge" aria-hidden="true"><span></span></div>
+            <div class="tags">{% for tag in item.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+        </a>
+    {% endfor %}
+    </div>
+</section>
+<section class="stack" aria-label="Technology stack">
+    <span>{{ icon('code', 20) }} Arcane &amp; Tech Stack</span><ul><li>Python</li><li>Flask</li><li>OpenCV</li><li>NumPy</li><li>Matplotlib</li><li>scikit-learn</li><li>scikit-image</li><li>Ultralytics</li><li>PyTorch</li></ul>
+</section>
+{% endblock %}

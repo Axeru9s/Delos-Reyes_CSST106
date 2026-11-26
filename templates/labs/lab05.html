@@ -1,0 +1,9 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ select('dataset','Dataset',[('lfw','Labeled Faces in the Wild (LFW)'),('practice','Synthetic practice faces (offline)')]) }}
+{{ numeric('components','PCA components',150,1,600) }}
+<label class="check"><input type="checkbox" name="failures" {% if request.form.get('failures') %}checked{% endif %}> Show misclassified images</label>
+<p class="field-help">The first LFW run downloads dataset files. <a href="{{ url_for('about') }}#datasets">Dataset setup</a></p>
+<div class="button-group">{{ run('Load Dataset / Run PCA','pca') }}{{ run('Run Classification','classify',false) }}</div>
+{% endblock %}
+{% block notes %}<p>The stratified split reserves 25% of faces for testing. PCA learns and whitens training features. An RBF SVM then classifies projections from the held-out test split. The classification report includes precision, recall, F1, and support for each identity.</p>{% endblock %}

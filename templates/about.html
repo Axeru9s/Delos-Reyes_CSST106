@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="breadcrumb"><a href="{{ url_for('index') }}">Dashboard</a><span>/</span><span>Documentation</span></div>
+<div class="doc-intro"><p class="eyebrow">CSST106</p><h1>About &amp; setup</h1><p>Run the hub locally and prepare reproducible results for the printed lab report.</p></div>
+<div class="docs-grid">
+<section class="panel doc-panel"><h2>Local installation</h2><p>Use Python 3.11 or 3.12 and run these commands from the project root.</p>
+<pre><code>python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m flask --app app run</code></pre>
+<p>On Windows PowerShell, activate with <code>.venv\Scripts\Activate.ps1</code>. Open <a href="http://127.0.0.1:5000">localhost:5000</a>.</p></section>
+<section class="panel doc-panel" id="datasets"><h2>LFW dataset</h2><p>Lab Activity 5 downloads aligned Labeled Faces in the Wild images into <code>datasets/</code> on the first run. Synthetic practice faces run offline. Use LFW results for the facial recognition report.</p><p>See the README for prefetching and cache locations.</p></section>
+<section class="panel doc-panel" id="models"><h2>Pretrained models</h2><p>Install the optional dependencies for Lab Activity 6 and the semantic method in Lab Activity 7.</p>
+<pre><code>python -m pip install -r requirements-models.txt</code></pre>
+<p>Weights download into <code>models/</code> on first use. If the download fails, use the README’s direct links and place the files there manually. Standard OpenCV wheels can run ORB and SIFT. SURF requires a nonfree-enabled contrib build.</p></section>
+<section class="panel doc-panel"><h2>Report evidence</h2><p>Record the lab number, input, selected method, parameters, and any active fallback. Capture the result panel or download the output images using the icon below each figure.</p><p>Sample credits, model details, and a lab-by-lab report checklist are included in the source.</p></section>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ upload(sample='Coffee photograph') }}
+{{ numeric('confidence','Confidence threshold',0.25,0.01,1,0.01) }}
+<p class="field-help">Inference uses YOLO11n on CPU. The first run needs model weights. <a href="{{ url_for('about') }}#models">Model setup</a></p>
+{{ run('Run Detection') }}
+{% endblock %}
+{% block notes %}
+<p>Each box shows the predicted COCO class and confidence. Lower the threshold to include less certain detections. Use the output table to compare confidence and bounding box coordinates.</p>
+<details><summary>Train with a custom dataset</summary>
+<p>Put images and matching labels in train and validation folders under <code>datasets/custom/</code>. Name each label file after its image and store one line per object as <code>class x_center y_center width height</code> using zero-based class IDs and normalized coordinates.</p>
+<pre><code># datasets/custom/data.yaml
+train: images/train
+val: images/val
+names:
+  0: example</code></pre>
+<pre><code>yolo detect train model=yolo11n.pt data=datasets/custom/data.yaml epochs=30
+yolo detect val model=runs/detect/train/weights/best.pt data=datasets/custom/data.yaml
+yolo detect predict model=runs/detect/train/weights/best.pt source=datasets/custom/images/val</code></pre>
+</details>
+{% endblock %}

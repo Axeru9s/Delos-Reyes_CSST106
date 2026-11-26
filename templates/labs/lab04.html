@@ -1,0 +1,10 @@
+{% extends 'labs/_workspace.html' %}
+{% block controls %}
+{{ upload('Image 1') }}
+{{ select('operation','Operation',[('detect','Detect keypoints'),('match','Match two images')]) }}
+<div data-show-for="operation:match">{{ upload('Image 2','Rotated calibration target','second') }}</div>
+{{ select('detector','Detector',[('SURF','SURF'),('ORB','ORB'),('SIFT','SIFT')]) }}
+<div data-show-for="detector:SURF">{{ numeric('hessian_threshold','SURF Hessian threshold',400,1,10000) }}</div>
+{{ run('Run Feature Analysis') }}
+{% endblock %}
+{% block notes %}<p>SURF availability depends on the OpenCV build. The results identify the detector that ran. Matching uses mutual nearest neighbors and draws up to 50 pairs. Compare images that share textured regions.</p>{% endblock %}
